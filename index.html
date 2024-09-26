@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تذكرة</title>
+    <style>
+        body {
+            background-color: #EEDDC9;
+            color: #16151A;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #16151A;
+            color: #EEDDC9;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+        input[type="text"] {
+            background-color: #EEDDC9;
+            color: #16151A;
+        }
+        button {
+            background-color: #16151A;
+            color: #EEDDC9;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #EEDDC9;
+            color: #16151A;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>تذكرة</h1>
+        <input type="text" id="zekr" placeholder="اكتب الذكر هنا">
+        <button onclick="submitZekr()">إرسال</button>
+    </div>
+
+    <script>
+        // إعداد Firebase
+        const firebaseConfig = {
+  apiKey: "AIzaSyAkH8Ru5eKdn-VZ1zXZHJBEihSD4ePg6yU",
+  authDomain: "tadkera-c9a49.firebaseapp.com",
+  projectId: "tadkera-c9a49",
+  storageBucket: "tadkera-c9a49.appspot.com",
+  messagingSenderId: "867614083091",
+  appId: "1:867614083091:web:bb9df1775642c1ea5f57e6",
+  measurementId: "G-0G8YJEHCSM"
+};
+        
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function submitZekr() {
+            const zekr = document.getElementById("zekr").value;
+            if (zekr.trim() !== "") {
+                db.collection("azkar").add({
+                    text: zekr,
+                    timestamp: new Date()
+                })
+                .then(() => {
+                    alert("تم إرسال الذكر بنجاح!");
+                    document.getElementById("zekr").value = "";  // تفريغ الحقل
+                })
+                .catch((error) => {
+                    console.error("خطأ في إرسال الذكر: ", error);
+                });
+            } else {
+                alert("يرجى كتابة الذكر قبل الإرسال.");
+            }
+        }
+    </script>
+</body>
+</html>
